@@ -155,12 +155,12 @@ Before you start deploying resources, create a [namespace](https://kubernetes.io
 
 ## Step 2: Deploying containers to Kubernetes
 
-If this is your first time working with Kubernetes, clone the [Microservice App Example repository](https://github.com/elgris/microservice-app-example) to your local machine. As mentioned in the beginning of the challenge, there's a k8s folder where you can find [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) and [Service](https://kubernetes.io/docs/concepts/services-networking/service/) definition files for each of the seven microservices. As a first step, try to use *kubectl* to launch [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/) (one microservice = one Pod). Once you have all containers running, move to step 3.
+If this is your first time working with Kubernetes, clone the [Microservice App Example repository](https://github.com/elgris/microservice-app-example) to your local machine. As mentioned in the beginning of the challenge, there's a k8s folder where you can find [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) and [Service](https://kubernetes.io/docs/concepts/services-networking/service/) definition files for each of the seven microservices. As a first step, try to use *kubectl* to launch [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/) (one microservice = one Pod). At this point, some containers might be failing (e.g. log message processor), but don't worry as it will be fixed in a later step.
 
 ## Step 3: Environment Variables
 
 The containers you deployed already contain all the environment variables needed by each microservice. However, let's use either [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) or [ConfigMaps](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) to provide these applications with the environment variables. 
-For each deployment file that contains the **env** key, delete all environment variables and move them to a new file (which will be either a Secret or a ConfigMap). Once that's done, deploy the new resources and restart all pods to make sure it worked.
+For each deployment file that contains the **env** key, delete all environment variables and move them to a new file (which will be either a Secret or a ConfigMap). Once that's done, deploy the new resources and restart all pods to make sure it worked (restarting means killing the pod with the `kubectl delete pod` command).
 
 ## Step 4: Health Checks
 
