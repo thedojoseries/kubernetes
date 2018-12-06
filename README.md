@@ -159,7 +159,23 @@ If this is your first time working with Kubernetes, clone the [Microservice App 
 
 ## Step 3: Environment Variables
 
-The containers you deployed already contain all the environment variables needed by each microservice. However, let's use either [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) or [ConfigMaps](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) to provide these applications with the environment variables. 
+The containers you deployed already contain all the environment variables needed by each microservice. 
+For example, if you go to `k8s/auth-api/deployment.yaml`, you will see the following:
+
+```
+- env:
+    - name: AUTH_API_PORT
+      value: "8081"
+    - name: JWT_SECRET
+      value: myfancysecret
+    - name: USERS_API_ADDRESS
+      value: http://users-api:8083
+    - name: ZIPKIN_URL
+      value: http://zipkin:9411/api/v2/spans
+```
+
+However, let's use either [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) or [ConfigMaps](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) to provide these applications with the environment variables. 
+
 For each deployment file that contains the **env** key, delete all environment variables and move them to a new file (which will be either a Secret or a ConfigMap). Once that's done, deploy the new resources and restart all pods to make sure it worked (restarting means killing the pod with the `kubectl delete pod` command).
 
 ## Step 4: Health Checks
