@@ -124,7 +124,7 @@ One of the security best practices when running applications on Kubernetes is to
 All you need to get started is Docker! We have already prepared a Docker image with **kubectl** configured for you. However, note that if you run kubectl inside the container but you are developing definition files outside the container (in your local machine), you will not be able to deploy these files. You will have to mount a volume into the container so kubectl can have access to your files. First, cd into the directory where your files will be, then run the following docker command to get started:
 
 ```
-docker run --rm -it -e "URL1=<URL1>" -e "URL2=<URL2>" -v $PWD:/code slalomdojo/env
+docker run --rm -it -e "URL1=<URL1>" -e "URL2=<URL2>" -v $PWD:/code slalomdojo/env:kubernetes
 ```
 
 **PS 1: The command above is primarily for Mac and Linux users. If you are a Windows user, you will have to replace $PWD with the full path of your directory.**
