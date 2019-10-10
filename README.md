@@ -4,7 +4,7 @@ In this challenge, you will have to deploy a TODO application to a Kubernetes cl
 
 # How the Challenge is Structured
 
-The challenge will start with an overview of the solution architecture, followed by a few sections to help you set up your environment. Then, there will be number of sections where each one of them tackles a small piece of the puzzle. And to make sure you've figured out each small piece correctly, there will be **Definition of Done** sections to show you how to test your solution. Finally, from time to time you will see **For discussion** sections (which are optional and can be skipped). The goal of these sections is to create a discussion between the team members and the organizers about a certain topic.
+The challenge will start with an overview of the solution's architecture, followed by a few sections to help you set up your environment. Then, there will be number of sections where each one of them tackles a small piece of the puzzle. And to make sure you've figured out each small piece correctly, there will be **Definition of Done** sections to show you how to test your solution. Finally, you will see some **For discussion** sections (which are optional and can be skipped). The goal of these sections is to create a discussion between the team members and the organizers about a certain topic.
 
 # Architecture
 
@@ -18,15 +18,16 @@ Here's a summary of the architecture:
 * Both Zipkin and Frontend will be served by only one Load Balancer
 * A few services will need to be configured with Environment Variables (Frontend, TODOs API, Auth API, Log Message and Users API)
 * Services can communicate internally with other services via private DNS names
-* The Redis Queue service will persist its data in a persistent disk that sits outside of the cluster
 
 # Cloning the Application Repository
 
-As aforementioned, you will be deploying seven microservices. To get started, clone this repository anywhere in your system (for Windows users: clone the repo under your home directory to avoid issues when mounting a volume into a Docker container): [https://github.com/elgris/microservice-app-example](https://github.com/elgris/microservice-app-example)
+As aforementioned, you will be deploying seven microservices. To get started, clone this repository anywhere in your system: [https://github.com/elgris/microservice-app-example](https://github.com/elgris/microservice-app-example)
+
+**Windows users: clone the repo under your home directory to avoid issues when mounting a volume into a Docker container.**
 
 # Accessing `kubectl`
 
-You will not need to install `kubectl` in your local machine. We have already prepared a Docker image configured with everything you will need. However, note that if you run kubectl inside the container but you are developing definition files outside the container (in your local machine), you will not be able to deploy anything. You will have to mount a volume into the container so kubectl can have access to your files. First, cd into the directory where you cloned the microservice-app-example repo, then run the following docker command to get started:
+You will not need to install `kubectl` in your local machine. We have already prepared a Docker image configured with everything you will need. However, note that if you run kubectl inside the container but you are developing definition files outside the container (in your local machine), you will not be able to deploy anything. You will have to mount a volume into the container so kubectl can have access to your files. First, cd into the directory where you cloned the `microservice-app-example` repo, then run the following docker command to get started:
 
 ```bash
 docker run --rm -it -e "URL1=<URL1>" -e "URL2=<URL2>" -v <PATH-TO-REPO>:/code slalomdojo/env:kubernetes
@@ -52,7 +53,7 @@ Whenever you deploy an application to Kubernetes without specifying a [Namespace
 
 ## Definition of Done
 
-Run `kubectl get ns` and you should see your namespace (`teamX`) listed. If it's not listed, then it has not been creted yet.
+Run `kubectl get ns` and you should see your namespace (`teamX`) listed. If it's not listed, then it has not been created yet.
 
 ***
 
@@ -82,7 +83,7 @@ You will notice that each microservice (not considering Redis or Zipkin) is refe
 * Users API: **slalomdojo/users-api**
 * Zipkin: **openzipkin/zipkin** (this image will not change)
 
-Go in each `deployment.yaml` and change the image accordingly.
+Open all `deployment.yaml` files and change the images accordingly.
 
 ## Definition of Done
 
@@ -112,9 +113,9 @@ Now that we are referencing the correct Docker images, let's [deploy](https://ku
 * todos-api
 * users-api
 
-In the majority of the directories you will a `deployment.yaml` and a `service.yaml`. **Do not worry about service.yaml for now**. Focus on `deployment.yaml` only.
+In the majority of the directories you will see a `deployment.yaml` and a `service.yaml`. **Do not worry about service.yaml for now**. Focus on `deployment.yaml` only.
 
-After deploying all the microservices above, [get](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#get) the pods of your namespace. If you haven't modified anything in `deployment.yaml` apart from the image name, you should see this:
+After deploying all the microservices above, [get](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#get) the pods in your namespace. If you haven't modified anything in `deployment.yaml` apart from the image name, you should see this:
 
 ```bash
 NAME                                     READY     STATUS              RESTARTS   AGE
@@ -152,11 +153,11 @@ All pods should be running, apart from log-message-processor which we will fix l
 
 # Deploying Redis and Zipkin
 
-Finally, deploy Redis and Zipkin. This should be an easy step as you should be able to deploy them as they are right now (without modifying anything in the deployment.yaml). 
+Finally, deploy Redis and Zipkin. This should be an easy step as you should be able to deploy them as they are right now (without modifying anything in their `deployment.yaml`). 
 
 ## Definition of Done
 
-You should have 7 Pods running:
+You should have 7 Pods running now:
 
 ```bash
 NAME                                     READY     STATUS             RESTARTS   AGE
@@ -213,13 +214,13 @@ Note that one of the Environment Variables is a JWT Secret. Kubernetes has a spe
 
 Here's what you need to do:
 
-1. Create one or more secrets that will be used by the microservices that require the JWT_SECRET environment variable.
-2. Whenever you see the JWT_SECRET environment varible in a `deployment.yaml` file, remove the `value` line only and replace it with a code that will reference a secret
+1. Create one or more secrets that will be used by the microservices that require the `JWT_SECRET` environment variable.
+2. Whenever you see the `JWT_SECRET` environment variable in a `deployment.yaml` file, remove the `value` line only and replace it with some [code that will reference a secret](https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/)
 3. Re-deploy the microservices.
 
 If you are not sure whether your solution worked or not, check out the **Definition of Done** section below.
 
-## For discussion
+## For Discussion
 
 Should you create a single Secret and use it for all microservices or create one Secret per microservice?
 
@@ -236,7 +237,7 @@ NAME                                     READY     STATUS             RESTARTS  
 auth-api-7867c48997-zzx77                1/1       Running            0          14m
 ```
 2. [Describe](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#describe) the pod and check the **Environment** object. You should see JWT_SECRET key but not the value. The value should be something like `<set to the key 'JWT_SECRET' in secret 'SECRET-NAME'>  Optional: false`.
-3. [Exec](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#exec) into the pod's container, run `env` and make sure *JWT_SECRET* is set.
+3. [Exec](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#exec) into the pod's container, run `env` and make sure `JWT_SECRET` is set.
 
 ***
 
@@ -244,16 +245,16 @@ auth-api-7867c48997-zzx77                1/1       Running            0         
 
 If you do not specify any health checks for your Pods, Kubernetes will not know when they're down. Health checks on Kubernetes can be configured using [Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/). There are three types of Probes: Liveness, Readiness and Startup. For this challenge, only Liveness and Readiness Probes should suffice. You do not need to implement Startup Probes. But if you would like to play around with it, feel free. Here's how you should configure each app (you can choose the values for failure and success thresholds, timeout, delay etc):
 
-* Auth API: HTTP GET on port 8081; path /version
-* Frontend: HTTP GET on port 8080; path /
-* Redis Queue: TCP Socket on port 6379
-* TODOs API: HTTP GET on port 8082; path /health
-* Users API: TCP Socket on port 8083
-* Zipkin: HTTP GET on port 9411; path /health
+* Auth API: HTTP GET on **port 8081**; path `/version`
+* Frontend: HTTP GET on port **8080**; path `/`
+* Redis Queue: TCP Socket on port **6379**
+* TODOs API: HTTP GET on port **8082**; path `/health`
+* Users API: TCP Socket on port **8083**
+* Zipkin: HTTP GET on port **9411**; path `/health`
 
-**You do not need to configure health checks for the Log Message Processor service.**
+**You do not need to configure health checks for the Log Message Processor Pod.**
 
-## For discussion
+## For Discussion
 
 What's the difference between Startup and Readiness Probes? Should you ever configure both at the same time? Or should you only use one instead of the other?
 
@@ -291,7 +292,7 @@ This leads to a problem: if some set of Pods (call them “backends”) provides
 Enter Services.
 ```
 
-> If the definition of Services is still not clear, reach out to one of the organizers 
+> If you still don't understand what Services are, reach out to one of the organizers.
 
 First, let's create Services for:
 
@@ -307,9 +308,9 @@ Finally, there are 2 Pods for which we still need to create Services:
 * frontend
 * zipkin
 
-Before you deploy these, you will have to change something in their `service.yaml`. Where it reads `type: LoadBalancer`, change it to `type: ClusterIP`. They key difference here is that Load Balancer would create a Load Balancer on GCP, while ClusterIP assigns a private IP to the service. The reason we don't want a Load Balancer is because the **Ingress Controller** already has a Load Balancer, which we'll use later.
+Before you deploy these, you will have to change something in their `service.yaml`. Where it reads `type: LoadBalancer`, change it to `type: ClusterIP`. They key difference here is that Load Balancer would create a Load Balancer on GCP, while ClusterIP assigns a private IP to the service. The reason we don't want a Load Balancer is because the [Ingress Controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) already has a Load Balancer, which we'll use later.
 
-What about `log-message-processor`? We will not create a Service for it since there are no Pods that are sending requests to the `log-message-processor`.
+What about `log-message-processor`? We will not create a Service for it since there are no Pods sending requests to it.
 
 ## For Discussion
 
@@ -329,7 +330,7 @@ users-api     ClusterIP   10.19.246.116   <none>        8083/TCP   1m
 zipkin        ClusterIP   10.19.255.221   <none>        9411/TCP   1m
 ```
 
-If there are any services with an External IP, that means you forgot to change Load Balancer to ClusterIP. You should have 6 Cluster IPs and 0 External IPs.
+If there are any services with an External IP, that means you forgot to change `Load Balancer` to `ClusterIP`. You should have 6 Cluster IPs and 0 External IPs.
 
 ***
 
@@ -392,8 +393,8 @@ If you are having trouble with these URLs not being resolved, please reach out t
 
 ## Ingress vs Services
 
-Although you can use [Services](https://kubernetes.io/docs/concepts/services-networking/service/) to expose applications to the Internet via Load Balancers, for this challenge use [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) instead. Ingress resources are powerful as it allows you to smartly route traffic to multiple backend services. If you read the documentation, you will notice that you need an Ingress Controller before you can deploy Ingress resources. **Your cluster already has an Ingress Controller that we deployed for you. Take a look at the pods in the ingress namespace.** (This is the Ingress Controller implementation we are using)[https://github.com/kubernetes/ingress-nginx].
-To link your Ingress resource to the controller that has been deployed, use the following piece of code in each of the Ingress definition files:
+Although you can use [Services](https://kubernetes.io/docs/concepts/services-networking/service/) to expose applications to the Internet using Load Balancers, for this challenge use [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) instead. Ingress resources are powerful as it allows you to smartly route traffic to multiple backend services. If you read the documentation, you will notice that you need an Ingress Controller before you can deploy Ingress resources. **Your cluster already has an Ingress Controller that was already deployed for you. Take a look at the pods in the ingress namespace.** [This is the Ingress Controller implementation we are using](https://github.com/kubernetes/ingress-nginx).
+To link your Ingress resource to the controller that has been deployed, use the following [Annotation](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) in each of the Ingress definition files:
 
 ```
 kind: Ingress
@@ -406,13 +407,25 @@ The annotation above tells Kubernetes that this Ingress belongs to the class **d
 
 ## For Discussion
 
-If there were 15 applications in total and there were split into 3 groups of 5 applications, how would you configure Ingress/Ingress Controller so that each group was assigned its own Load Balancer (there would be 3 Load Balancers in total)?
+If there were 15 applications in total and they were split into 3 groups of 5 applications, how would you configure Ingress/Ingress Controller so that each group was assigned its own Load Balancer (in this case, there would be 3 Load Balancers in total)?
 
 ## Definition of Done
 
-You should be able to type in `frontend.team1.toronto.devopsdojo.ninja` and `zipkin.team1.toronto.devopsdojo.ninja` and see an interface for each.
+You should be able to type in `frontend.teamX.devopsdojo.ninja` and `zipkin.teamX.devopsdojo.ninja` in your browser and see the following interfaces:
 
-If you're having DNS issues, try curling these URLs and setting the `Host` header. For example: `curl <INGRESS-IP> -H 'Host: frontend.teamX.devopsdojo.ninja'`. You should be able to get a response for the Frontend, but you will not get a response for Zipkin. If you got a positive response for the Frontend, it's safe to assume Zipkin is also working.
+`Frontend`
+![image-06](./images/06-frontend-interface.png)
+
+`Zipkin`
+![image-08](./images/08-zipkin-interface.png)
+
+If you're having DNS issues, try curling these URLs and setting the `Host` header. For example: 
+
+```bash
+curl <INGRESS-IP> -H 'Host: frontend.teamX.devopsdojo.ninja'
+``` 
+
+You should be able to get a response for the Frontend, but you will not get a response for Zipkin. If you got a positive response for the Frontend, it's safe to assume Zipkin is also working.
 
 ***
 
@@ -482,3 +495,4 @@ After implementing all the Network Policies above, is the application still work
 ## Definition of Done
 
 The application should be working as before and you should be able to log in, create and delete tasks and log out.
+
