@@ -1,0 +1,42 @@
+data:
+  mapUsers: |
+    - userarn: arn:aws:iam::ACCOUNT_ID:user/team1
+      username: team1
+      groups:
+        - team1-role
+    - userarn: arn:aws:iam::ACCOUNT_ID:user/team2
+      username: team2
+      groups:
+        - team2-role
+    - userarn: arn:aws:iam::ACCOUNT_ID:user/team3
+      username: team3
+      groups:
+        - team3-role
+    - userarn: arn:aws:iam::ACCOUNT_ID:user/team4
+      username: team4
+      groups:
+        - team4-role
+    - userarn: arn:aws:iam::ACCOUNT_ID:user/team5
+      username: team5
+      groups:
+        - team5-role
+    - userarn: arn:aws:iam::ACCOUNT_ID:user/team6
+      username: team6
+      groups:
+        - team6-role
+    - userarn: arn:aws:iam::ACCOUNT_ID:user/team7
+      username: team7
+      groups:
+        - team7-role
+    - userarn: arn:aws:iam::ACCOUNT_ID:user/team8
+      username: team8
+      groups:
+        - team8-role
+    - userarn: arn:aws:iam::ACCOUNT_ID:user/team9
+      username: team9
+      groups:
+        - team9-role
+    - userarn: arn:aws:iam::ACCOUNT_ID:user/team10
+      username: team10
+      groups:
+        - team10-role

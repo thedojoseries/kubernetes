@@ -1289,7 +1289,9 @@ To double check everything is working as expected, you will need to load the Fro
 
 Once you're able to load the website, you should be able to see a web page with two input fields and a green login button. To log in, type in `johnd` in the first (top) input field and `foo` in the second (bottom) input field. Then click on `Login`.
 
-If you're able to log in, congrats! You've successfully deployed a microservice solution to a Kubernetes cluster running on AWS. You've done a great job and we understand you must be tired by now, but...
+**If you're able to log in, congrats! However, note that you will not be able to interact with the application (i.e. create and delete items). This TODO application is missing a microservice which was purposedly removed from this challenge. As long as you can log in, that's it, you're done!**
+
+You've successfully deployed a microservice solution to a Kubernetes cluster running on AWS. You've done a great job and we understand you must be tired by now, but...
 
 ...one more thing. The cherry on the cake.
 
