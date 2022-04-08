@@ -30,13 +30,13 @@ Make sure to use the [AWS Calculator](https://calculator.aws/#/) to know how muc
 
 # Prerequisites
 
-Before you run the `deploy.sh` script, make sure to:
+Before you run the `deploy-infra.sh` script, make sure to:
 
 * Install [Terraform v1.0+](https://www.terraform.io/downloads)
 * Install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * Create a [Keybase](https://keybase.io/) user if you haven't got one yet and install the [Keybase app](https://keybase.io/docs/the_app/install_macos)
 
-When you run the `deploy.sh` script, the script will ask you for the following:
+When you run the `deploy-infra.sh` script, the script will ask you for the following:
 
 * `Enter minimum team number` - for this challenge, teams are numbered. If you will have 10 teams and would like to number them 1 to 10 (i.e., team1, team2, team3, team4, etc), enter `1` here.
 * `Enter maximum team number` - this is the number assigned to the last team. If you want to number teams 1 to 10, enter `10` here
@@ -78,7 +78,11 @@ data:
 
 **One more thing...** the deploy script is likely to run on Linux as is. However, you will probably need to change the `sed` command since the macOS implementation of `sed` is a bit different than the implementation for Linux. But apart from that, you shouldn't need to change the deploy script too much to run it on Linux.
 
-That's it! When you're ready, run `./deploy.sh`.
+That's it! When you're ready, run `./deploy-infra.sh`.
+
+# Destroying the infrastructure
+
+Simply run `./destroy-infra.sh` and it should all be destroyed!
 
 # Support
 
