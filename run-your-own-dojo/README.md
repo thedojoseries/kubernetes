@@ -35,6 +35,7 @@ Before you run the `deploy-infra.sh` script, make sure to:
 * Install [Terraform v1.0+](https://www.terraform.io/downloads)
 * Install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * Create a [Keybase](https://keybase.io/) user if you haven't got one yet and install the [Keybase app](https://keybase.io/docs/the_app/install_macos)
+* Install [jq](https://stedolan.github.io/jq/)
 
 When you run the `deploy-infra.sh` script, the script will ask you for the following:
 
